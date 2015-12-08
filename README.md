@@ -29,7 +29,7 @@ docker run --name swift14 -v $PWD:/src -v $PWD:/output eosrei/swift-dev-buildbot
 
 Following runs will be much faster and only update changed files.
 ```bash
-docker run -v $PWD:/src -v $PWD:/output swift14
+docker start -i -a swift14
 ```
 
 **Note:** OS X and Windows with [Docker Machine](https://docs.docker.com/machine/)
