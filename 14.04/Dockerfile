@@ -14,7 +14,7 @@ ENV BUILD /build
 ENV INSTALL /install
 ENV OUTPUT /output
 
-COPY start.sh /root/start.sh
+COPY build.sh /root/build.sh
 
 # Note: git config required for swiftpm/Tests/dep/FunctionalBuildTests.swift
 RUN buildDeps='git cmake ninja-build uuid-dev icu-devtools libbsd-dev \
@@ -28,7 +28,7 @@ RUN buildDeps='git cmake ninja-build uuid-dev icu-devtools libbsd-dev \
     && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-3.6 100 \
     && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-3.6 100 \
     && git config --global user.email "root@example.com" \
-    && git config --global user.name "Root"
-    && COPY start.sh /root/start.sh
+    && git config --global user.name "Root" \
+    && chmod +x /root/build.sh
 
-CMD ["/root/start.sh"]
+CMD ["/root/build.sh"]
