@@ -34,8 +34,8 @@ git clone https://github.com/apple/swift-corelibs-foundation.git
 Get the container images and run both builds:
 ```
 cd /path/to/swift
-docker run --name swift14 -v $PWD:/src -v $PWD:/output eosrei/swift-dev-buildbot:14.04
-docker run --name swift15 -v $PWD:/src -v $PWD:/output eosrei/swift-dev-buildbot:15.10
+docker run -i -t --name swift14 -v $PWD:/src -v $PWD:/output eosrei/swift-dev-buildbot:14.04
+docker run -i -t --name swift15 -v $PWD:/src -v $PWD:/output eosrei/swift-dev-buildbot:15.10
 ```
 
 **Note:** OS X and Windows with [Docker Machine](https://docs.docker.com/machine/)

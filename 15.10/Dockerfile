@@ -1,8 +1,7 @@
 # Test an Apple Swift build with the Ubuntu 15.10 buildbot preset using a
-# codebase provided by the user.
+# using a codebase provided in a Volume.
 
 FROM ubuntu:15.10
-MAINTAINER Brad Erickson <eosrei@gmail.com>
 
 # Volume mounted from host to access source code. [Required]
 VOLUME ["/src"]
