@@ -1,8 +1,8 @@
 ## Docker Buildbot for the Apple Swift language
 
-Runs the [Swift](https://swift.org/) `utils/build-script` *buildbot_linux_1404*
-and *buildbot_linux_1510* presets in Ubuntu 14.04/15.10 containers. Use for
-local development unit testing or automated builds.
+Runs the [Swift](https://swift.org/) `utils/build-script` *buildbot_linux*
+preset in Ubuntu 14.04/15.10 containers. Use for local development unit testing
+or automated builds.
 
 Source code is accessed on the host machine via a Docker Volume at `/src`. The
 build log `build-${TIMESTAMP}.log` and an install package *(on success)*
