@@ -1,15 +1,13 @@
-# Run an Apple Swift build with the Ubuntu 14.04 buildbot preset using a
-# using a codebase provided in a Volume.
-# NOTE: This container is bre-built with a full ${BUILD} directory to save build
-# time on initial builds.
-
-# Todo: Custom build preset to avoid running tests?
+# Run a basic Apple Swift build to generate a ${BUILD} directory for use with
+# buildbot_linux presets. Saves time on one-off builds, but shouldn't be used
+# for regular development since the layered file system will keep old files.
 
 FROM eosrei/swift-dev-buildbot:14.04
 
 # Store the source in the temporary volume
-WORKDIR ${BUILD}
+WORKDIR ${SOURCE}
 
+# Run build-script with settings similar to the li
 RUN git clone --depth 1 https://github.com/apple/swift.git swift \
     && git clone --depth 1 https://github.com/apple/swift-llvm.git llvm \
     && git clone --depth 1 https://github.com/apple/swift-clang.git clang \
@@ -20,11 +18,7 @@ RUN git clone --depth 1 https://github.com/apple/swift.git swift \
     && git clone --depth 1 https://github.com/apple/swift-corelibs-xctest.git \
     && git clone --depth 1 https://github.com/apple/swift-corelibs-foundation.git \
     && export SWIFT_BUILD_ROOT=${BUILD} \
-    && export TIMESTAMP=`date +"%Y%m%d-%H%M%S"` \
-    && ${BUILD}/swift/utils/build-script --preset=buildbot_linux_1404 \
-       install_destdir=${INSTALL} \
-       installable_package=${OUTPUT}/swift-${TIMESTAMP}-ubuntu14.04.tar.gz \
-       2>&1 | tee ${OUTPUT}/build-${TIMESTAMP}.log \
-    && rm -rf ${BUILD}/* ${OUTPUT}/*
+    && ${SOURCE}/swift/utils/build-script --release --build-subdir=buildbot_linux \
+    && rm -rf ${SOURCE}/*
 
 CMD ["/root/build.sh"]
