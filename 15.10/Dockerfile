@@ -1,7 +1,9 @@
-# Test an Apple Swift build with the Ubuntu 15.10 buildbot preset using a
+# Test an Apple Swift build with the Linux buildbot preset using a
 # using a codebase provided in a Volume.
 
 FROM ubuntu:15.10
+
+MAINTAINER https://github.com/eosrei/docker-swift-dev-buildbot
 
 # Volume mounted from host to access source code. [Required]
 VOLUME ["/src"]
