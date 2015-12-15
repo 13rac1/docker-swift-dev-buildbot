@@ -5,11 +5,11 @@
 FROM eosrei/swift-dev-buildbot:14.04
 
 # Store the source in the temporary volume
-WORKDIR ${SOURCE}
+WORKDIR /src
 
 # Run build-script with settings similar to the buildbot_linux preset, but without
 # any of the tests.
-# TODO: Make a custom presest?
+# TODO: Make a custom preset?
 RUN git clone --depth 1 https://github.com/apple/swift.git swift \
     && git clone --depth 1 https://github.com/apple/swift-llvm.git llvm \
     && git clone --depth 1 https://github.com/apple/swift-clang.git clang \
@@ -19,10 +19,9 @@ RUN git clone --depth 1 https://github.com/apple/swift.git swift \
     && git clone --depth 1 https://github.com/apple/swift-package-manager.git swiftpm \
     && git clone --depth 1 https://github.com/apple/swift-corelibs-xctest.git \
     && git clone --depth 1 https://github.com/apple/swift-corelibs-foundation.git \
-    && export SWIFT_BUILD_ROOT=${BUILD} \
-    && ${SOURCE}/swift/utils/build-script --assertions --llbuild --swiftpm --xctest \
+    && /src/swift/utils/build-script --assertions --llbuild --swiftpm --xctest \
       --build-subdir=buildbot_linux --lldb --release --foundation -- \
       --swift-enable-ast-verifier=0 --build-swift-static-stdlib=1 --reconfigure \
-    && rm -rf ${SOURCE}/*
+    && rm -rf /src/*
 
 CMD ["/root/build.sh"]

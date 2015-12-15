@@ -10,10 +10,8 @@ VOLUME ["/src"]
 # Volume to store compiled package and build log. [Optional]
 VOLUME ["/output"]
 
-ENV SOURCE /src
-ENV BUILD /build
-ENV INSTALL /install
-ENV OUTPUT /output
+# Where build-script will store the build files
+ENV SWIFT_BUILD_ROOT /build
 
 COPY build.sh /root/build.sh
 
