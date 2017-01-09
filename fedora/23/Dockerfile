@@ -19,7 +19,7 @@ COPY build.sh /root/build.sh
 RUN deps='git cmake ninja-build libuuid-devel icu libbsd-devel \
       libedit-devel libxml2-devel libsq3-devel swig python-devel \
       ncurses-devel pkgconfig ca-certificates python rsync file python3 \
-      libicu-devel clang which tar'; \
+      libicu-devel clang which tar autoconf automake libcurl-devel'; \
     dnf -y update \
     && dnf -y install $deps \
     && dnf clean all \
