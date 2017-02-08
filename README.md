@@ -1,45 +1,41 @@
 ### Docker Buildbot for the Apple Swift language
 
-Runs the [Swift](https://swift.org/) *buildbot_linux* build preset in Ubuntu 14.04/15.10 and Fedora 23 containers. Use for local development unit testing or automated builds.
+Runs the [Swift](https://swift.org/) *buildbot_linux* build preset in Ubuntu 16.04/14.04 and Fedora 23 containers. 
+Use for local development unit testing or automated builds.
 
-Source code is accessed on the host machine via a Docker Volume at `/src`. The build log `build-${TIMESTAMP}.log` and an install package *(on success)* `swift-${TIMESTAMP}-ubuntu${VERSION}.tar.gz` are written to the Volume `/output` after each build.
+Source code is accessed on the host machine via a Docker Volume at `/src`. The build log `build-${TIMESTAMP}.log` 
+and an install package *(on success)* `swift-${TIMESTAMP}-ubuntu${VERSION}.tar.gz` are written to the Volume `/output` after each build.
 
 Pre-built containers available on Docker Hub at: https://hub.docker.com/r/eosrei/swift-dev-buildbot/
 
 ### Dockerfiles and Tags
 
-* Ubuntu 14.04 LTS: `latest`,`14.04` ([Dockerfile](https://github.com/eosrei/docker-swift-dev-buildbot/blob/master/14.04/Dockerfile))
-* Ubuntu 15.10: `15.10` ([Dockerfile](https://github.com/eosrei/docker-swift-dev-buildbot/blob/master/15.10/Dockerfile))
+* Ubuntu 16.04 LTS: `latest`,`16.04` ([Dockerfile](https://github.com/eosrei/docker-swift-dev-buildbot/blob/master/16.04/Dockerfile))
+* Ubuntu 14.04 LTS: `14.04` ([Dockerfile](https://github.com/eosrei/docker-swift-dev-buildbot/blob/master/14.04/Dockerfile))
 * Fedora 23: `fedora23` ([Dockerfile](https://github.com/eosrei/docker-swift-dev-buildbot/blob/master/fedora/23/Dockerfile))
 
 ### Setup
 
-This process requires a copy of the Swift project codebase to share with the containers. The source can be a location on the host machine or as a linked Volume in another container. The examples assume local development.
+This process requires a copy of the Swift project codebase to share with the containers. The source can be a location on the host 
+machine or as a linked Volume in another container. The examples assume local development.
 
 Example Swift project cloning, further details at the [Swift Github project](https://github.com/apple/swift) page:
 ```
-mkdir /path/to/swift
-cd /path/to/swift
+mkdir swift
+cd swift
 git clone https://github.com/apple/swift.git swift
-git clone https://github.com/apple/swift-llvm.git llvm
-git clone https://github.com/apple/swift-clang.git clang
-git clone https://github.com/apple/swift-lldb.git lldb
-git clone https://github.com/apple/swift-cmark.git cmark
-git clone https://github.com/apple/swift-llbuild.git llbuild
-git clone https://github.com/apple/swift-package-manager.git swiftpm
-git clone https://github.com/apple/swift-corelibs-xctest.git
-git clone https://github.com/apple/swift-corelibs-foundation.git
+./swift/utils/update-checkout --clone-with-ssh
 ```
 
 Get the container images and the builds:
 ```
-cd /path/to/swift
+docker run --name swift-16 -v $PWD:/src -v $PWD:/output eosrei/swift-dev-buildbot:16.04
 docker run --name swift-14 -v $PWD:/src -v $PWD:/output eosrei/swift-dev-buildbot:14.04
-docker run --name swift-15 -v $PWD:/src -v $PWD:/output eosrei/swift-dev-buildbot:15.10
 docker run --name swift-f23 -v $PWD:/src -v $PWD:/output eosrei/swift-dev-buildbot:fedora23
 ```
 
-**Note:** OS X and Windows with [Docker Machine](https://docs.docker.com/machine/) must use volume locations within `/Users` (OS X) or `C:\Users` (Windows). Details:
+**Note:** OS X and Windows with [Docker Machine](https://docs.docker.com/machine/) must use volume locations within
+`/Users` (OS X) or `C:\Users` (Windows). Details:
 * https://docs.docker.com/v1.8/installation/mac/#mount-a-volume-on-the-container
 * http://docs.docker.com/engine/userguide/dockervolumes/#mount-a-host-directory-as-a-data-volume
 
@@ -48,14 +44,14 @@ docker run --name swift-f23 -v $PWD:/src -v $PWD:/output eosrei/swift-dev-buildb
 Subsequent builds will reuse build artifacts and run quickly; ~1.5hrs vs
 ~20 minutes in my experience.
 
+Run the Ubuntu 16.04 LTS build:
+```
+docker start -i -a swift-16
+```
+
 Run the Ubuntu 14.04 LTS build:
 ```
 docker start -i -a swift-14
-```
-
-Run the Ubuntu 15.10 build:
-```
-docker start -i -a swift-15
 ```
 
 Run the Fedora 23 build:
